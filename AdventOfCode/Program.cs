@@ -4,11 +4,11 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Question1();
-        Question2();
+        D1Q1();
+        D1Q2();
     }
 
-    static void Question1()
+    static void D1Q1()
     {
         string fileName = "../../../Files/input1.txt";
 
@@ -47,7 +47,7 @@ class Program
         Console.WriteLine(sum);
     }
 
-    static void Question2()
+    static void D1Q2()
     {
         string fileName = "../../../Files/input1.txt";
 
