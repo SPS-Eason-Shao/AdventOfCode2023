@@ -51,43 +51,46 @@
 
         public static int Question2(List<string> input)
         {
+            Dictionary<string, int> valuePairs = new()
+            {
+                { "red", 0 },
+                { "green", 1 },
+                { "blue", 2 }
+            };
+
             int sum = 0;
 
             foreach(string line in input)
             {
-                int rMax = 0, gMax = 0, bMax = 0;
+                List<int> maxNo = new() { 0, 0, 0 };
 
-                string[] split = line.Split(':');
+                List<string> split = line.Split(':').ToList();
 
                 int gameNo = int.Parse(split[0].Substring(5, split[0].Length - 5));
 
-                string[] rounds = split[1].Split(';');
+                List<string> rounds = split[1].Split(';').ToList();
 
                 foreach (string round in rounds)
                 {
-                    string[] choices = round.Split(' ');
+                    List<string> choices = round.Split(' ').ToList(); ;
 
-                    for (int i = 1; i < choices.Length; i += 2)
+                    for (int i = 1; i < choices.Count; i += 2)
                     {
                         int ballNo = int.Parse(choices[i]);
                         string colour = choices[i + 1].Replace(",", string.Empty);
 
-                        switch (colour)
-                        {
-                            case "red":
-                                rMax = ballNo > rMax ? ballNo : rMax;
-                                break;
-                            case "green":
-                                gMax = ballNo > gMax ? ballNo : gMax;
-                                break;
-                            case "blue":
-                                bMax = ballNo > bMax ? ballNo : bMax;
-                                break;
-                        }
+                        maxNo[valuePairs[colour]] = ballNo > maxNo[valuePairs[colour]] ? ballNo : maxNo[valuePairs[colour]];
                     }
                 }
 
-                sum += rMax * gMax * bMax;
+                int power = 1;
+
+                foreach (int i in maxNo)
+                {
+                    power *= i;
+                }
+
+                sum += power;
             }
 
             return sum;
