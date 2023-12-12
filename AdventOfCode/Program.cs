@@ -4,8 +4,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        D1Q1();
-        D1Q2();
+        // D1Q1();
+        // D1Q2();
+        // D2Q1();
+        // D2Q2();
     }
 
     static void D1Q1()
@@ -133,5 +135,110 @@ class Program
 
         Console.WriteLine(sum);
     }
+
+    static void D2Q1()
+    {
+        string fileName = "../../../Files/input2.txt";
+
+        Dictionary<string, int> valuePairs = new()
+        {
+            { "red", 12 },
+            { "green", 13 },
+            { "blue", 14 }
+        };
+
+        int sum = 0;
+
+        using (var streamReader = new StreamReader(fileName))
+        {
+            while (!streamReader.EndOfStream)
+            {
+                string line = streamReader.ReadLine() ?? string.Empty;
+
+                bool valid = true;
+
+                string[] split = line.Split(':');
+
+                int gameNo = int.Parse(split[0].Substring(5, split[0].Length - 5));
+
+                string[] rounds = split[1].Split(';');
+
+                foreach(string round in rounds)
+                {
+                    string[] choices = round.Split(' ');
+
+                    for(int i = 1; i < choices.Length; i += 2)
+                    {
+                        int ballNo = int.Parse(choices[i]);
+                        string colour = choices[i + 1].Replace(",", string.Empty);
+
+                        if (ballNo > valuePairs[colour])
+                        {
+                            valid = false;
+                        }
+                    }
+                }
+
+                if (valid)
+                {
+                    sum += gameNo;
+                }
+            }
+        }
+
+        Console.WriteLine(sum);
+    }
+
+    static void D2Q2()
+    {
+        string fileName = "../../../Files/input2.txt";
+
+        int sum = 0;
+
+        using (var streamReader = new StreamReader(fileName))
+        {
+            while (!streamReader.EndOfStream)
+            {
+                string line = streamReader.ReadLine() ?? string.Empty;
+
+                int rMax = 0, gMax = 0, bMax = 0;
+
+                string[] split = line.Split(':');
+
+                int gameNo = int.Parse(split[0].Substring(5, split[0].Length - 5));
+
+                string[] rounds = split[1].Split(';');
+
+                foreach (string round in rounds)
+                {
+                    string[] choices = round.Split(' ');
+
+                    for (int i = 1; i < choices.Length; i += 2)
+                    {
+                        int ballNo = int.Parse(choices[i]);
+                        string colour = choices[i + 1].Replace(",", string.Empty);
+
+                        switch (colour)
+                        {
+                            case "red":
+                                rMax = ballNo > rMax ? ballNo : rMax;
+                                break;
+                            case "green":
+                                gMax = ballNo > gMax ? ballNo : gMax;
+                                break;
+                            case "blue":
+                                bMax = ballNo > bMax ? ballNo : bMax;
+                                break;
+                        }
+                    }
+                }
+
+                sum += rMax * gMax * bMax;
+            }
+        }
+
+        Console.WriteLine(sum);
+    }
+
 }
 
